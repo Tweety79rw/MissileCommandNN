@@ -9,6 +9,7 @@ class Enemy extends Missile{
     this.origin = createVector(this.pos.x, this.pos.y);
     this.maxVel = 1;
     this.killed = false;
+    this.dead = false;
     this.r = 0;
     this.turrets = turrets;
     this.points = [];
@@ -86,7 +87,7 @@ class Enemy extends Missile{
     return map(val, -1, 1, 0, 1);
   }
   update() {
-    if(this.killed) return;
+    if(this.killed || this.dead) return;
 
     this.count++;
     if(this.count >= 60) {
@@ -111,10 +112,10 @@ class Enemy extends Missile{
     }
     this.lifespan--;
     if(this.lifespan == 0)
-      this.killed = true;
+      this.dead = true;
   }
   render() {
-    if(this.killed) return;
+    if(this.killed || this.dead) return;
     push();
     // stroke(255);
     noFill();

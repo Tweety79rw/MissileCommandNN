@@ -5,6 +5,7 @@ let starterEnemies = [];
 let savedEnemies = [];
 let score = 0;
 let maxEnemies = 100;
+let generationNum = 1;
 function setup() {
   createCanvas(1600,800);
   turrets.push(new Turret(width/4, 700));
@@ -62,6 +63,11 @@ function draw() {
       score++;
       continue;
     }
+    if(enemies[i].dead) {
+      savedEnemies.push(enemies[i]);
+      enemies.splice(i,1);
+      continue;
+    }
     enemies[i].steer();
     enemies[i].update();
     enemies[i].render();
@@ -93,10 +99,12 @@ function draw() {
       starterEnemies.push(new Enemy(turrets, b))
     }
     savedEnemies = [];
+    generationNum++;
   }
   fill(255);
   textSize(24);
   text('Score: ' + score, width - 150, 30);
+  text('Generation: ' + generationNum, 20, 30)
 }
 function acceptReject(ops) {
    if(ops.sanity > 1000)
