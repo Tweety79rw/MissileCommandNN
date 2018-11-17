@@ -4,7 +4,7 @@ let enemyExplosion = [];
 let starterEnemies = [];
 let savedEnemies = [];
 let score = 0;
-let maxEnemies = 10;
+let maxEnemies = 100;
 function setup() {
   createCanvas(1600,800);
   turrets.push(new Turret(width/4, 700));

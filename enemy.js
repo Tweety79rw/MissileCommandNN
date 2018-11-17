@@ -15,6 +15,7 @@ class Enemy extends Missile{
     this.points.push(createVector(this.pos.x, this.pos.y));
     this.previousHeading = this.vel.heading();
     this.count = 0;
+    this.lifespan = 3600;
   }
   calculateFit() {
     let closest = Infinity;
@@ -86,6 +87,7 @@ class Enemy extends Missile{
   }
   update() {
     if(this.killed) return;
+
     this.count++;
     if(this.count >= 60) {
       let out = this.brain.predict(this.getBrainInput());
@@ -99,7 +101,7 @@ class Enemy extends Missile{
       this.exploded = true;
     if(this.vel.heading() !== this.previousHeading){
       this.points.push(this.pos.copy());
-      if(this.points.length > 20) {
+      if(this.points.length > 100) {
         this.points.splice(0,1);
       }
     }
@@ -107,15 +109,19 @@ class Enemy extends Missile{
     if(this.pos.x < -10 || this.pos.x > width + 10 || this.pos.y < -10) {
       this.killed = true;
     }
+    this.lifespan--;
+    if(this.lifespan == 0)
+      this.killed = true;
   }
   render() {
     if(this.killed) return;
     push();
-    stroke(255);
+    // stroke(255);
     noFill();
     let x = this.points[0].x;
     let y = this.points[0].y;
     for(let i = 1; i < this.points.length; i++) {
+      stroke(255, map(i, 0, 99, 10, 255));
       line(x, y, this.points[i].x,this.points[i].y);
       x = this.points[i].x;
       y = this.points[i].y;
